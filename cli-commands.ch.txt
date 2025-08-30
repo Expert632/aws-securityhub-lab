@@ -1,0 +1,28 @@
+#!/bin/bash
+# ============================================================
+# AWS CLI Script - Enable and Configure AWS Security Hub
+# ============================================================
+
+# Exit immediately if a command exits with a non-zero status
+set -e
+
+# 1. Check AWS CLI version
+aws --version
+
+# 2. Enable AWS Security Hub in the current region
+aws securityhub enable-security-hub
+
+# 3. Enable CIS AWS Foundations Benchmark standard (example)
+aws securityhub enable-security-standard \
+    --standards-arn arn:aws:securityhub:us-east-1::standards/cis-aws-foundations-benchmark/v/1.2.0
+
+# 4. List enabled security standards
+aws securityhub get-enabled-standards
+
+# 5. Retrieve the first 10 Security Hub findings
+aws securityhub get-findings --max-results 10
+
+# 6. (Optional) Enable Amazon GuardDuty and integrate with Security Hub
+aws guardduty create-detector --enable
+
+echo "? AWS Security Hub setup completed successfully!"
